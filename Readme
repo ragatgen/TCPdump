@@ -1,0 +1,24 @@
+Explanation:
+Script Structure:
+
+The script defines a function check_db_connectivity which takes db_host and db_port as arguments.
+It then attempts to connect to the specified database host and port using tcpping.
+Using tcpping:
+
+tcpping is used with options:
+-x 1: Number of retries (1 in this case).
+-t 1: Timeout in seconds (1 second in this case).
+Output is redirected to /dev/null to suppress unnecessary output.
+The exit code of tcpping command ($?) is captured.
+Checking Connectivity:
+
+If the exit code is 0, the connection is successful, and a success message is printed.
+If the exit code is non-zero, the connection attempt failed, and an error message is printed.
+Example Usage:
+
+Replace "your_database_host" and "your_database_port" with your actual database host and port.
+Call check_db_connectivity function with the host and port parameters.
+Notes:
+Make sure tcpping is installed on your Linux system. It's not a standard command and may need to be installed separately (often available in package repositories like apt, yum, etc.).
+Adjust timeout and retry options (-x, -t) as per your network environment and requirements.
+Ensure the script has execute permissions (chmod +x script_name.sh) to run it as a standalone script.
