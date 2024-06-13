@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Maximum file size in bytes (5 GB)
+MAX_FILE_SIZE_BYTES=$((5 * 1024 * 1024 * 1024))
+
+# Path to the output file for tcpdump
+OUTPUT_FILE="/path/to/capture.cap"
+
+# Function to check and rotate tcpdump file if it exceeds maximum size
+check_and_rotate() {
+    local file_size
+    file_size=$(stat --printf="%s" "$OUTPUT_FILE")
+
+    if [ "$file_size" -ge "$MAX_FILE_SIZE_BYTES" ]; then
+        # Rename the current file with timestamp
+        mv "$OUTPUT_FILE" "$OUTPUT_FILE.$(date +%Y%m%d-%H%M%S)"
+
+        # Restart tcpdump to create a new output file
+        tcpdump --snapshot-length=0 -vvv -w "$OUTPUT_FILE" &
+    fi
+}
+
+# Main loop to periodically check the file size
+while true; do
+    check_and_rotate
+    sleep 300  # Check every 5 minutes (adjust as needed)
+done
