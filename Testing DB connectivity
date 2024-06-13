@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Function to check database connectivity using tcpping
+check_db_connectivity() {
+    local db_host="$1"
+    local db_port="$2"
+    
+    # Run tcpping and capture the exit code
+    tcpping -x 1 -t 1 "$db_host" "$db_port" > /dev/null 2>&1
+    local exit_code=$?
+    
+    # Check the exit code
+    if [ $exit_code -eq 0 ]; then
+        echo "Database connectivity to $db_host:$db_port is successful."
+    else
+        echo "Failed to connect to $db_host:$db_port."
+    fi
+    
+    return $exit_code
+}
+
+# Example usage
+db_host="your_database_host"
+db_port="your_database_port"
+
+check_db_connectivity "$db_host" "$db_port"
